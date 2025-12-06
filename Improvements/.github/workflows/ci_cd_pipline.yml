@@ -85,6 +85,10 @@ jobs:
         run: |
           python scripts/validate_sync.py
 
+      - name: Run SQL tests
+        run: |
+          python scripts/run_tests.py
+
       - name: Run anomaly detection
         run: |
           python scripts/anomaly_detection.py
@@ -99,13 +103,4 @@ jobs:
       - name: Pipeline Complete
         run: |
           echo "CI/CD Pipeline completed successfully for commit $GITHUB_SHA"
-          echo "All databases deployed, data loaded, synced, and validated."
-
-
-
-
-
-### Add this step to .github/workflows/ci_cd_pipeline.yml after the validation step:
-yml- name: Run SQL tests
-  run: |
-    python scripts/run_tests.py
+          echo "All databases deployed, data loaded, synced, validated, and tested."
