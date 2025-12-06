@@ -1,16 +1,18 @@
 import os
 import pymysql
+import time
 from pymongo import MongoClient, UpdateOne
 from dotenv import load_dotenv
+from monitoring_utils import record_db_metrics
 
 load_dotenv()
 
-MYSQL_HOST = os.getenv("MYSQL_HOST", "127.0.0.1")
-MYSQL_USER = os.getenv("MYSQL_APP_USER") or os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD") or os.getenv("MYSQL_PASSWORD", "")
-MYSQL_DB = os.getenv("MYSQL_DB_NAME") or os.getenv("MYSQL_DATABASE", "nyc_taxi")
+MYSQL_HOST = os.getenv("MYSQL_HOST")
+MYSQL_USER = os.getenv("MYSQL_APP_USER")
+MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD")
+MYSQL_DB = os.getenv("MYSQL_DB_NAME")
 
-MONGO_URI = os.getenv("MONGODB_URI") or os.getenv("MONGO_URI")
+MONGO_URI = os.getenv("MONGODB_URI")
 MONGO_DB = os.getenv("MONGODB_DB_NAME", "nyc_taxi_db")
 
 def get_mysql_conn():
@@ -23,6 +25,9 @@ def get_mysql_conn():
     )
 
 def sync_data():
+    start_time = time.time()
+    error_count = 0
+    
     print("Connecting to MySQL...")
     conn = get_mysql_conn()
     
@@ -32,26 +37,42 @@ def sync_data():
     col = db["taxi_trips"]
 
     print("Fetching data from MySQL...")
+    fetch_start = time.time()
+    
     with conn.cursor(pymysql.cursors.DictCursor) as cur:
-        cur.execute("SELECT * FROM taxi_trips LIMIT 100000")  # Limit for performance
+        cur.execute("SELECT * FROM taxi_trips LIMIT 100000")
         rows = cur.fetchall()
+    
+    record_db_metrics("mysql", "sync_fetch", fetch_start, error_count=0)
 
     print(f"Syncing {len(rows)} records to MongoDB...")
+    sync_start = time.time()
+    
     ops = []
     for r in rows:
-        # Convert datetime objects to strings for MongoDB
-        for key, val in r.items():
-            if hasattr(val, 'isoformat'):
-                r[key] = val.isoformat()
-        
-        ops.append(UpdateOne({"trip_id": r["trip_id"]}, {"$set": r}, upsert=True))
+        try:
+            for key, val in r.items():
+                if hasattr(val, 'isoformat'):
+                    r[key] = val.isoformat()
+            
+            ops.append(UpdateOne({"trip_id": r["trip_id"]}, {"$set": r}, upsert=True))
+        except Exception as e:
+            error_count += 1
+            print(f"Error preparing record: {e}")
 
     if ops:
-        result = col.bulk_write(ops)
-        print(f"✅ Synced {len(ops)} documents → MongoDB")
-        print(f"   Inserted: {result.upserted_count}, Modified: {result.modified_count}")
+        try:
+            result = col.bulk_write(ops)
+            print(f" Synced {len(ops)} documents → MongoDB")
+            print(f"   Inserted: {result.upserted_count}, Modified: {result.modified_count}")
+        except Exception as e:
+            error_count += 1
+            print(f"Error during bulk write: {e}")
     else:
         print("No data to sync")
+    
+    record_db_metrics("mongodb", "sync_write", sync_start, error_count=error_count)
+    record_db_metrics("mysql", "sync_complete", start_time, error_count=error_count)
     
     conn.close()
     mongo.close()

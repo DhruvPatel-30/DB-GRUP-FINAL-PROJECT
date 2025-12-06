@@ -3,13 +3,14 @@ import time
 import pymysql
 import os
 from dotenv import load_dotenv
+from monitoring_utils import record_db_metrics
 
 load_dotenv()
 
-MYSQL_HOST = os.getenv("MYSQL_HOST", "127.0.0.1")
-MYSQL_USER = os.getenv("MYSQL_APP_USER") or os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD") or os.getenv("MYSQL_PASSWORD", "")
-MYSQL_DB = os.getenv("MYSQL_DB_NAME") or os.getenv("MYSQL_DATABASE", "nyc_taxi")
+MMYSQL_HOST = os.getenv("MYSQL_HOST")
+MYSQL_USER = os.getenv("MYSQL_APP_USER")
+MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD")
+MYSQL_DB = os.getenv("MYSQL_DB_NAME")
 
 def get_conn():
     return pymysql.connect(
@@ -39,6 +40,7 @@ def insert_op(thread_id):
         print(f"Insert error in thread {thread_id}: {e}")
     
     duration = time.time() - start
+    record_db_metrics("mysql", "concurrent_insert", start, error_count=errors)
     print(f"[Thread {thread_id}] Insert completed in {duration:.2f}s (errors: {errors})")
     conn.close()
 
@@ -55,6 +57,7 @@ def update_op(thread_id):
         print(f"Update error in thread {thread_id}: {e}")
     
     duration = time.time() - start
+    record_db_metrics("mysql", "concurrent_update", start, error_count=errors)
     print(f"[Thread {thread_id}] Update completed in {duration:.2f}s (errors: {errors})")
     conn.close()
 
@@ -73,6 +76,7 @@ def select_op(thread_id):
         print(f"Select error in thread {thread_id}: {e}")
     
     duration = time.time() - start
+    record_db_metrics("mysql", "concurrent_select", start, error_count=errors)
     print(f"[Thread {thread_id}] Select completed in {duration:.2f}s (errors: {errors})")
     conn.close()
 
@@ -83,11 +87,10 @@ def main():
     start_time = time.time()
     threads = []
     
-    # Create multiple threads for each operation type
     operations = [
-        (insert_op, 3),  # 3 insert threads
-        (update_op, 2),  # 2 update threads
-        (select_op, 5),  # 5 select threads
+        (insert_op, 3),
+        (update_op, 2),
+        (select_op, 5),
     ]
     
     thread_id = 0
@@ -102,9 +105,17 @@ def main():
         t.join()
 
     total_duration = time.time() - start_time
+    
+    # Record overall concurrent ops metrics
+    record_db_metrics("mysql", "concurrent_complete", start_time, error_count=0)
+    
     print("="*60)
     print(f" All concurrent operations complete in {total_duration:.2f}s")
     print(f"   Total threads: {len(threads)}")
+    
+    # Print metrics summary
+    from monitoring_utils import print_metrics_summary
+    print_metrics_summary()
 
 if __name__ == "__main__":
     main()

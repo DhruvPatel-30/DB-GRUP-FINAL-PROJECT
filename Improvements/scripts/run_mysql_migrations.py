@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MYSQL_HOST = os.getenv("MYSQL_HOST", "127.0.0.1")
-MYSQL_USER = os.getenv("MYSQL_APP_USER") or os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD") or os.getenv("MYSQL_PASSWORD", "")
-MYSQL_DB = os.getenv("MYSQL_DB_NAME") or os.getenv("MYSQL_DATABASE", "nyc_taxi")
+MYSQL_HOST = os.getenv("MYSQL_HOST")
+MYSQL_USER = os.getenv("MYSQL_APP_USER")
+MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD")
+MYSQL_DB = os.getenv("MYSQL_DB_NAME")
 
 MIGRATIONS_DIR = "sql/migrations"
 
@@ -50,7 +50,7 @@ def run_migrations():
 
     cursor.close()
     conn.close()
-    print("✅ All migrations completed")
+    print(" All migrations completed")
 
 if __name__ == "__main__":
     run_migrations()

@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-MYSQL_HOST = os.getenv("MYSQL_HOST", "127.0.0.1")
-MYSQL_USER = os.getenv("MYSQL_APP_USER") or os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD") or os.getenv("MYSQL_PASSWORD", "")
-MYSQL_DB = os.getenv("MYSQL_DB_NAME") or os.getenv("MYSQL_DATABASE", "nyc_taxi")
+MYSQL_HOST = os.getenv("MYSQL_HOST")
+MYSQL_USER = os.getenv("MYSQL_APP_USER")
+MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD")
+MYSQL_DB = os.getenv("MYSQL_DB_NAME")
 
 TEST_DIR = "sql/test"
 
@@ -24,7 +24,7 @@ def run_test_file(conn, filename):
     filepath = f"{TEST_DIR}/{filename}"
     
     if not os.path.exists(filepath):
-        print(f"⚠️  Test file not found: {filepath}")
+        print(f"  Test file not found: {filepath}")
         return
     
     print(f"\n{'='*60}")
@@ -53,7 +53,7 @@ def run_test_file(conn, filename):
     cursor.close()
 
 def main():
-    print("🧪 Starting SQL Test Suite...")
+    print(" Starting SQL Test Suite...")
     
     conn = get_conn()
     
@@ -69,7 +69,7 @@ def main():
     conn.close()
     
     print("\n" + "="*60)
-    print("✅ All tests completed!")
+    print(" All tests completed!")
     print("="*60)
 
 if __name__ == "__main__":

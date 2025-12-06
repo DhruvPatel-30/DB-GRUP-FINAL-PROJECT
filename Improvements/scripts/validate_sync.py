@@ -1,16 +1,18 @@
 import os
 import pymysql
+import time
 from pymongo import MongoClient
 from dotenv import load_dotenv
+from monitoring_utils import record_db_metrics
 
 load_dotenv()
 
-MYSQL_HOST = os.getenv("MYSQL_HOST", "127.0.0.1")
-MYSQL_USER = os.getenv("MYSQL_APP_USER") or os.getenv("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD") or os.getenv("MYSQL_PASSWORD", "")
-MYSQL_DB = os.getenv("MYSQL_DB_NAME") or os.getenv("MYSQL_DATABASE", "nyc_taxi")
+MYSQL_HOST = os.getenv("MYSQL_HOST")
+MYSQL_USER = os.getenv("MYSQL_APP_USER")
+MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD")
+MYSQL_DB = os.getenv("MYSQL_DB_NAME")
 
-MONGO_URI = os.getenv("MONGODB_URI") or os.getenv("MONGO_URI")
+MONGO_URI = os.getenv("MONGODB_URI")
 MONGO_DB = os.getenv("MONGODB_DB_NAME", "nyc_taxi_db")
 
 def get_mysql_conn():
@@ -20,6 +22,8 @@ def get_mysql_conn():
     )
 
 def main():
+    start_time = time.time()
+    
     print("Validating MySQL ↔ MongoDB sync...")
     
     conn = get_mysql_conn()
@@ -39,7 +43,6 @@ def main():
         if not doc:
             not_found += 1
         else:
-            # Compare key fields
             try:
                 if abs(float(doc.get("total_amount", 0)) - float(r["total_amount"])) > 0.01:
                     mismatches += 1
@@ -54,6 +57,10 @@ def main():
     print(f"✗ Mismatches:      {mismatches}")
     print("="*50)
 
+    # Record metrics with mismatch count
+    total_issues = mismatches + not_found
+    record_db_metrics("mysql", "validation", start_time, error_count=0, mismatch_count=total_issues)
+
     conn.close()
     mongo.close()
 
@@ -61,7 +68,7 @@ def main():
         print("\n Validation PASSED - Data is in sync!")
         exit(0)
     else:
-        print(f"\n  Validation found {mismatches + not_found} issues")
+        print(f"\n  Validation found {total_issues} issues")
         exit(1)
 
 if __name__ == "__main__":
