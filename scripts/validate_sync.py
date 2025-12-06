@@ -6,11 +6,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MYSQL_HOST = os.getenv("MYSQL_HOST")
-MYSQL_USER = os.getenv("MYSQL_USER")
-MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
-MYSQL_DB = os.getenv("MYSQL_DATABASE")
+MYSQL_USER = os.getenv("MYSQL_APP_USER")
+MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD")
+MYSQL_DB = os.getenv("MYSQL_DB_NAME")
 
-MONGO_URI = os.getenv("MONGO_URI")
+MONGO_URI = os.getenv("MONGODB_URI")
 
 def get_mysql_conn():
     return pymysql.connect(

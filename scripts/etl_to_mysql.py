@@ -9,9 +9,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 MYSQL_HOST = os.getenv("MYSQL_HOST")
-MYSQL_USER = os.getenv("MYSQL_USER")
-MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
-MYSQL_DB = os.getenv("MYSQL_DATABASE")
+MYSQL_USER = os.getenv("MYSQL_APP_USER")
+MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD")
+MYSQL_DB = os.getenv("MYSQL_DB_NAME")
 DATASET_URL = os.getenv("DATASET_URL")
 
 CHUNK_SIZE = 50000  # 50k rows per chunk

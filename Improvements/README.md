@@ -100,3 +100,12 @@ jobs:
         run: |
           echo "CI/CD Pipeline completed successfully for commit $GITHUB_SHA"
           echo "All databases deployed, data loaded, synced, and validated."
+
+
+
+
+
+### Add this step to .github/workflows/ci_cd_pipeline.yml after the validation step:
+yml- name: Run SQL tests
+  run: |
+    python scripts/run_tests.py
