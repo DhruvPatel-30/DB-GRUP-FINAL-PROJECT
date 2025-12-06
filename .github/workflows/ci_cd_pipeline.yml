@@ -2,9 +2,7 @@ name: CI/CD - Multi DB NYC Taxi
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "dev", "feature/*" ]
 
 jobs:
   ci-cd:
