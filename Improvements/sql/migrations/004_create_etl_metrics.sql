@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS etl_metrics (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    rows_loaded INT NOT NULL,
+    duration_seconds DOUBLE NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
