@@ -9,3 +9,6 @@ sqlalchemy
 opentelemetry-sdk
 opentelemetry-exporter-otlp
 opentelemetry-instrumentation
+pyarrow
+fastparquet
+requests

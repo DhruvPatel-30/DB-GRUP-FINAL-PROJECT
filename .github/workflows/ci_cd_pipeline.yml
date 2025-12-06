@@ -102,5 +102,9 @@ jobs:
 
       - name: Pipeline Complete
         run: |
-          echo "CI/CD Pipeline completed successfully for commit $GITHUB_SHA"
+          echo "==============================================="
+          echo "✅ CI/CD Pipeline completed successfully!"
+          echo "==============================================="
+          echo "Commit: $GITHUB_SHA"
           echo "All databases deployed, data loaded, synced, validated, and tested."
+          echo "==============================================="

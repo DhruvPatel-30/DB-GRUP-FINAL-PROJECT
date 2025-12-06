@@ -7,7 +7,7 @@ from monitoring_utils import record_db_metrics
 
 load_dotenv()
 
-MMYSQL_HOST = os.getenv("MYSQL_HOST")
+MYSQL_HOST = os.getenv("MYSQL_HOST")  # ← FIXED: Was MMYSQL_HOST
 MYSQL_USER = os.getenv("MYSQL_APP_USER")
 MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD")
 MYSQL_DB = os.getenv("MYSQL_DB_NAME")
@@ -110,7 +110,7 @@ def main():
     record_db_metrics("mysql", "concurrent_complete", start_time, error_count=0)
     
     print("="*60)
-    print(f" All concurrent operations complete in {total_duration:.2f}s")
+    print(f"✅ All concurrent operations complete in {total_duration:.2f}s")
     print(f"   Total threads: {len(threads)}")
     
     # Print metrics summary
