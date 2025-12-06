@@ -9,7 +9,7 @@ MYSQL_USER = os.getenv("MYSQL_APP_USER")
 MYSQL_PASSWORD = os.getenv("MYSQL_APP_PASSWORD")
 MYSQL_DB = os.getenv("MYSQL_DB_NAME")
 
-TEST_DIR = "sql/test"
+TEST_DIR = "sql/tests"
 
 def get_conn():
     return pymysql.connect(
