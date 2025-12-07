@@ -92,6 +92,44 @@ jobs:
         run: |
           python scripts/anomaly_detection.py
 
+      # ============================================
+      # 📊 TASK 2: MONITORING & ALERTING
+      # ============================================
+
+      - name: Verify Monitoring Metrics Collected
+        run: |
+          echo "================================================"
+          echo "📊 Verifying Monitoring Data Collection"
+          echo "================================================"
+          python scripts/verify_monitoring.py
+
+      - name: Check Alert Thresholds
+        run: |
+          echo "================================================"
+          echo "🚨 Checking Alert Thresholds"
+          echo "================================================"
+          python scripts/check_alerts.py
+
+      - name: Generate Monitoring Report
+        run: |
+          echo "================================================"
+          echo "📈 Generating Monitoring Summary"
+          echo "================================================"
+          python scripts/generate_monitoring_report.py
+
+      - name: Upload Monitoring Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitoring-report
+          path: |
+            ./logs/monitoring_report.txt
+            ./logs/alerts.log
+
+      # ============================================
+      # END MONITORING SECTION
+      # ============================================
+
       - name: Upload Pipeline Logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -106,4 +144,5 @@ jobs:
           echo "==============================================="
           echo "Commit: $GITHUB_SHA"
           echo "All databases deployed, data loaded, synced, validated, and tested."
+          echo "Monitoring metrics collected and alerts verified."
           echo "==============================================="
