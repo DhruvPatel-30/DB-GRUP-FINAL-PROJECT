@@ -1,0 +1,19 @@
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: email
+    receivers:
+      - uid: email-receiver
+        type: email
+        settings:
+          addresses: group2@gmail.com
+
+policies:
+  - orgId: 1
+    receiver: email
+    group_by: ['alertname']
+    routes:
+      - receiver: email
+        matchers:
+          - alertname =~ ".*Alert"
