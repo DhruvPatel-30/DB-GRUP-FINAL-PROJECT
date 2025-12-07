@@ -159,6 +159,63 @@ DATASET_URL=https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023
 python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
+Step 2: Set Up MySQL (5 minutes)
+
+# Install MySQL
+sudo apt-get update
+sudo apt-get install -y mysql-server mysql-client
+
+# Start MySQL service
+sudo service mysql start
+
+# Check MySQL is running
+sudo service mysql status
+
+# Set password to 'root' (matches your .env)
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+sudo mysql -e "FLUSH PRIVILEGES;"
+
+Test MySQL connection:
+bashmysql -u root -proot -e "SELECT 'MySQL is working!' as status;"
+Expected output:
++-------------------+
+| status            |
++-------------------+
+| MySQL is working! |
++-------------------+
+
+🔧 Fix Both Issues
+bash# Step 1: Disable bash history expansion temporarily
+set +H
+
+# Step 2: Restart MySQL service
+sudo service mysql restart
+
+# Step 3: Wait a moment for MySQL to start
+sleep 3
+
+# Step 4: Check MySQL is running
+sudo service mysql status
+
+# Step 5: Now test connection (! won't cause issues anymore)
+mysql -u root -p'root' -e "SELECT 'MySQL is working!' as status;"
+
+# Step 6: Show databases
+mysql -u root -p'root' -e "SHOW DATABASES;"
+
+
+🔧 Fix MySQL Socket Permissions
+bash# Step 1: Check socket file permissions
+ls -la /var/run/mysqld/
+
+# Step 2: Fix permissions
+sudo chmod 777 /var/run/mysqld/mysqld.sock
+sudo chmod 755 /var/run/mysqld/
+
+# Step 3: Try connecting again
+mysql -u root -p'root' -e "SHOW DATABASES;"
+
+
 
 ### 4. Run Database Migrations
 ```bash
