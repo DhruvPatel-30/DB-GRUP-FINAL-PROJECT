@@ -103,8 +103,8 @@ Importance of monitoring in deployment pipelines
 
 
 
-###  👤 VARUN - Member 2
-Files Varun Creates/Owns:
+###  👤 Jay - Member 2
+Files jay Creates/Owns:
 ├── sql/
 │   ├── migrations/
 │   │   ├── 001_create_schema_version.sql
@@ -121,7 +121,7 @@ Files Varun Creates/Owns:
 └── scripts/
     ├── sync_mysql_to_mongo.py
     └── validate_sync.py
-Varun's Report Sections:
+Jay's Report Sections:
 Introduction (1-2 sentences)
 Write:
 
@@ -277,8 +277,8 @@ Migration management best practices
 
 
 
-### 👤 JAY - Member 3
-Files Jay Creates/Owns:
+### 👤 Varun - Member 3
+Files Varun Creates/Owns:
 ├── scripts/
 │   ├── concurrent_ops.py
 │   ├── anomaly_detection.py
@@ -295,7 +295,7 @@ Files Jay Creates/Owns:
 │       └── otel-collector-config.yaml
 └── docs/
     └── optimization_recommendations.md
-Jay's Report Sections:
+Varun's Report Sections:
 Introduction (1-2 sentences)
 Write:
 
@@ -539,20 +539,20 @@ ML applications in data quality
 1. Introduction (All members write 1-2 sentences each)
 
 Dhruv: Project overview, dataset, objectives
-Varun: Database technologies and architecture
-Jay: Monitoring and ML components
+Jay: Database technologies and architecture
+Varun: Monitoring and ML components
 
 2. Monitoring & Alerting Summary (Each member adds 1 screenshot + description)
 
 Dhruv: CI/CD monitoring integration
-Varun: Data sync mismatch monitoring
-Jay: Grafana dashboard + Signoz traces
+Jay: Data sync mismatch monitoring
+Varun: Grafana dashboard + Signoz traces
 
 3. Challenges & Solutions (Each member writes 1 challenge they faced)
 
 Dhruv: "GitHub Actions secret management for MongoDB Atlas URI"
-Varun: "Handling Decimal to float conversion during sync"
-Jay: "Configuring OpenTelemetry with Codespace port forwarding"
+Jay: "Handling Decimal to float conversion during sync"
+Varun: "Configuring OpenTelemetry with Codespace port forwarding"
 
 4. Conclusion (Each member writes 2-3 sentences)
 
@@ -571,7 +571,7 @@ Dhruv Submits:
 ✅ Report sections 1-4
 ✅ 6+ screenshots
 
-Varun Submits:
+Jay Submits:
 
 ✅ All SQL migration files (4 files)
 ✅ All SQL test files (4 files)
@@ -580,7 +580,7 @@ Varun Submits:
 ✅ Report sections on database design
 ✅ 6+ screenshots
 
-Jay Submits:
+Varun Submits:
 
 ✅ Concurrent operations script
 ✅ Anomaly detection script
@@ -601,7 +601,7 @@ Dhruv's Checklist:
  Write report sections 1-4
  Contribute to shared sections
 
-Varun's Checklist:
+Jay's Checklist:
 
  All 4 SQL migrations created
  All 4 SQL tests created
@@ -611,7 +611,7 @@ Varun's Checklist:
  Write database sections
  Contribute to shared sections
 
-Jay's Checklist:
+Varun's Checklist:
 
  Docker Compose tested and running
  Grafana dashboard with 6 panels (LIVE DATA)

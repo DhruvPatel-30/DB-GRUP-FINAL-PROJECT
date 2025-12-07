@@ -1,0 +1,99 @@
+{
+  "dashboard": {
+    "title": "NYC Taxi Database Monitoring",
+    "panels": [
+      {
+        "id": 1,
+        "title": "CPU Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "SELECT AVG(cpu_percent) FROM db_metrics WHERE recorded_at > NOW() - INTERVAL 1 HOUR GROUP BY db_type",
+            "datasource": "MySQL"
+          }
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "type": "query",
+              "query": {"params": ["A", "5m", "now"]},
+              "reducer": {"type": "avg"},
+              "evaluator": {"type": "gt", "params": [85]}
+            }
+          ],
+          "executionErrorState": "alerting",
+          "frequency": "1m",
+          "handler": 1,
+          "name": "High CPU Alert",
+          "notifications": []
+        }
+      },
+      {
+        "id": 2,
+        "title": "Memory Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "SELECT AVG(mem_percent) FROM db_metrics WHERE recorded_at > NOW() - INTERVAL 1 HOUR GROUP BY db_type"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Query Latency",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "SELECT AVG(avg_latency_ms) FROM db_metrics WHERE recorded_at > NOW() - INTERVAL 1 HOUR GROUP BY operation"
+          }
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": {"type": "gt", "params": [500]}
+            }
+          ],
+          "name": "Slow Query Alert"
+        }
+      },
+      {
+        "id": 4,
+        "title": "Data Sync Mismatches",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "SELECT SUM(mismatch_count) FROM db_metrics WHERE recorded_at > NOW() - INTERVAL 1 HOUR"
+          }
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": {"type": "gt", "params": [0]}
+            }
+          ],
+          "name": "Sync Mismatch Alert"
+        }
+      },
+      {
+        "id": 5,
+        "title": "Error Count",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "SELECT SUM(error_count) FROM db_metrics WHERE recorded_at > NOW() - INTERVAL 1 HOUR"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Operations per Minute",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "SELECT COUNT(*) FROM db_metrics WHERE recorded_at > NOW() - INTERVAL 1 HOUR GROUP BY MINUTE(recorded_at)"
+          }
+        ]
+      }
+    ]
+  }
+}

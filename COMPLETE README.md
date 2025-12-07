@@ -1,20 +1,10 @@
-# 🚕 NYC Taxi Multi-Database CI/CD System
-
-[![CI/CD Pipeline](https://github.com/DhruvPatel-30/DB-GRUP-FINAL-PROJECT/actions/workflows/ci_cd_pipeline.yml/badge.svg)](https://github.com/DhruvPatel-30/DB-GRUP-FINAL-PROJECT/actions)
+#  NYC Taxi Multi-Database CI/CD System
 
 > **PROG8850 Final Group Project** - Cross-Database Automation, Monitoring & Anomaly Detection with CI/CD
 
 ---
 
-## 👥 Team Members
 
-| Name | Role | Responsibilities |
-|------|------|------------------|
-| **Dhruv Patel** | DevOps Lead | Repository setup, CI/CD pipeline, ETL development |
-| **Varun** | Database Engineer | MySQL/MongoDB schema, migrations, sync & validation |
-| **Jay** | Performance Engineer | Concurrency testing, anomaly detection, monitoring |
-
----
 
 ## 📋 Project Overview
 
@@ -490,7 +480,7 @@ mysql -h localhost -u app_user -p nyc_taxi -e "SELECT COUNT(*) FROM taxi_trips;"
 
 ## 📝 Project Tasks Checklist
 
-### ✅ Task 1: CI/CD Pipeline (20 pts)
+### ✅ Task 1: CI/CD Pipeline 
 - [x] GitHub repository with proper structure
 - [x] GitHub Actions workflow
 - [x] MySQL schema migrations
@@ -500,14 +490,14 @@ mysql -h localhost -u app_user -p nyc_taxi -e "SELECT COUNT(*) FROM taxi_trips;"
 - [x] Data validation
 - [x] Comprehensive testing
 
-### ✅ Task 2: Monitoring & Alerting (15 pts)
+### ✅ Task 2: Monitoring & Alerting 
 - [x] Signoz integration
 - [x] Grafana dashboards (6 panels)
 - [x] CPU, memory, latency monitoring
 - [x] Alert configuration (>85% CPU, >500ms queries, mismatches)
 - [x] Email/webhook notifications
 
-### ✅ Task 3: Anomaly Detection & Optimization (10 pts)
+### ✅ Task 3: Anomaly Detection & Optimization 
 - [x] Isolation Forest implementation
 - [x] Anomaly storage in both databases
 - [x] Performance analysis
@@ -565,13 +555,6 @@ python scripts/etl_to_mysql.py
 
 ---
 
-## 📖 Documentation
-
-- **Project Report:** [docs/Final_Report_PROG8850.pdf](docs/Final_Report_PROG8850.pdf)
-- **Optimization Guide:** [docs/optimization_recommendations.md](docs/optimization_recommendations.md)
-- **API Docs:** Inline docstrings in Python files
-
----
 
 ## 🤝 Contributing
 
@@ -593,15 +576,6 @@ python scripts/etl_to_mysql.py
 
 ---
 
-## 📄 License
-
-This project is for educational purposes as part of PROG8850 - DevOps for Data Engineering.
-
-**Course:** PROG8850  
-**Institution:** Conestoga College  
-**Semester:** Fall 2024
-
----
 
 ## 🎓 Learning Outcomes
 
@@ -617,27 +591,4 @@ Through this project, we learned:
 
 ---
 
-## 📞 Contact
 
-**Dhruv Patel** - DevOps Lead  
-**Varun** - Database Engineer  
-**Jay** - Performance Engineer  
-
-**GitHub:** [DhruvPatel-30/DB-GRUP-FINAL-PROJECT](https://github.com/DhruvPatel-30/DB-GRUP-FINAL-PROJECT)
-
----
-
-## 🙏 Acknowledgments
-
-- **Professor:** [Your Professor's Name]
-- **Dataset:** NYC Taxi & Limousine Commission
-- **Tools:** Grafana, Signoz, GitHub Actions
-- **Inspiration:** Production-grade database automation systems
-
----
-
-**⭐ If you found this project helpful, please star the repository!**
-
----
-
-*Last Updated: December 2024*
